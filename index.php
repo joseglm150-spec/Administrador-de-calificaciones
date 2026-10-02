@@ -37,8 +37,24 @@
             <!-- Botón acceder -->
             <div class="checkbox-group">
                 <button type="submit" class="btn-submit">Acceder</button>
-            </div>    
+            </div> 
             
+            <!-- boton recordarme -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Recordarme</label>
+            </div>
+
+            <!-- Enlace para recuperar contraseña -->
+            <div class="checkbox-group">
+                <a href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <!-- Entrar en el menu temporal -->
+            <div class="checkbox-group">
+                <a href="menu.php">Entrar al menú</a>
+                
+            </div>
         </form>    
         <p>Copyright © 2026 TecNM Campus Puruándiro - Todos los Derechos Reservados</p>
 
