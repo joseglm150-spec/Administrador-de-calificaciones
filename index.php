@@ -12,8 +12,7 @@
 <body>
     <!-- Barra superior con los logos -->
     <header class="top-bar">
-        <img src="assets/img/tecnm.png" alt="Logo de el tecnm" class="logo-tecnm">
-        <img src="assets/img/itesp.jpg" alt="Logo de el itesp" class="logo-itesp">
+        
     </header>
 
     <!-- Contenedor del formulario de inicio de sesión -->
