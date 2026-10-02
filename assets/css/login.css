@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* Estilos de la barra superior */
+.top-bar {
+    background-color: #ffffff;
+    width: 100%;
+    height: 90px; /* Altura de la barra */
+    display: flex;
+    align-items: center; /* Centra el logo verticalmente */
+    padding: 0 10px; /* Da un espacio de 20px a los lados */
+    box-sizing: border-box; /* Asegura que el padding no desborde el ancho */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Opcional: sombra sutil para separarla del fondo */
+    
+    /*la barra se quedea fija al hacer scroll */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que la barra siempre esté por encima del resto */
+}
+
+.logo-tecnm{
+    height: 70px; /* Ajusta la altura para que quepa dentro de los 70px de la barra */
+    width: auto;
+    top: 1px;  /* Distancia desde el borde superior */
+    left: 1px; /* Distancia desde el borde izquierdo */
+}
+
+/* Estilos para el logo del itespdentro de la barra */
+.logo-itesp {
+    height: 60px;
+    width: auto;
+    margin-left: auto; /* Empuja el logo a la derecha */
+   
+}
+
+/* Estilos para el logo dentro de la barra */
+.logo-SIRCA{
+    height: 165px; /* Ajusta la altura para que quepa dentro de los 70px de la barra */
+    width: auto;
+    padding: 1px 1px 1px;
+    
+   
+}
+
+/* Evitar que el contenedor de login quede oculto debajo de la barra fija */
+.login-container {
+    margin-top: 50px; /* Empuja el formulario hacia abajo */
+    /* (Mantén el resto de los estilos de tu login-container) */
+}
+
+body {
+    background-color: #B1B3B3;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 500px;
+    height: 600px;
+    padding: 1px 40px 30px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+
+.input-group {
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 16px;
+    color: #333333;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    height: 45px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #333;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: #a0a0a0;
+}
+
+
+.btn-submit {
+    width: 100%;
+    height: 50px;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #19396A;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #1d3fa6;
+}
+
+.footer-links {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #a0a0a0;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #2a53d1;
+}
+
+p {
+    font-size: 12px;
+    color: #a0a0a0;
+    margin-top: 50px;
+}
+
+/* --- DISEÑO RESPONSIVO (Tablets y Celulares) --- */
+@media (max-width: 600px) {
+    .top-bar {
+        padding: 0 15px; /* Reduce márgenes laterales en la barra */
+    }
+    
+    /* Escala los logos para que no se amontonen en dispositivos móviles */
+    .top-bar img {
+        max-height: 50px;
+    }
+
+    .logo-itesp {
+        height: 45px;
+    }
+
+    .login-container {
+        padding: 30px 20px; /* Aprovecha más el espacio de pantalla en celulares */
+    }
+}
