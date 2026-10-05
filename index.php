@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,30 +37,18 @@
             <div class="checkbox-group">
                 <button type="submit" class="btn-submit">Acceder</button>
             </div> 
-            
-            <!-- boton recordarme -->
-            <div class="checkbox-group">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Recordarme</label>
-            </div>
+        </form>
 
-            <!-- Enlace para recuperar contraseña -->
-            <div class="checkbox-group">
-                <a href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>
-            </div>
+        <nav class="footer-links" aria-label="Opciones de acceso">
+            <a class="recovery-link" href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>
+            <a class="temporary-menu-link" href="menu.php">Entrar al menú temporal</a>
+        </nav>
 
-            <!-- Entrar en el menu temporal -->
-            <div class="checkbox-group">
-                <a href="menu.php">Entrar al menú</a>
-                
-            </div>
-        </form>    
-        <p>Copyright © 2026 TecNM Campus Puruándiro - Todos los Derechos Reservados</p>
+        <p>Copyright © 2026 SIRCA - Todos los Derechos Reservados</p>
 
             
     </div>
     
 </body>
 </html>
-
 
