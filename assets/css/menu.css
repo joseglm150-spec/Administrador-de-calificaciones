@@ -1,6 +1,6 @@
 :root {
-	--azul: #173b67;
-	--azul2: #24558c;
+	--azul: #19396A;
+	--azul2: #1d3fa6;
 	--fondo: #f3f6fb;
 	--texto: #26364a;
 	--gris: #718096;
@@ -115,29 +115,39 @@ main {
 }
 
 header {
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	position: relative;
 	height: 70px;
 	flex: none;
 	align-items: center;
-	justify-content: space-between;
 	padding: 0 32px;
 	border-bottom: 1px solid var(--borde);
 	background: #fff;
 }
 
 header h1 {
-	display: flex;
+	grid-column: 2;
 	min-width: 0;
-	align-items: center;
-	gap: 14px;
 	margin: 0;
 	font-size: 19px;
+	text-align: center;
+}
+
+.usuario {
+	grid-column: 3;
+	justify-self: end;
+	z-index: 1;
 }
 
 .logo-sirca-header {
 	display: block;
+	position: absolute;
+	top: 50%;
+	left: 32px;
 	width: auto;
 	height: 46px;
+	transform: translateY(-50%);
 }
 
 .usuario {
@@ -305,6 +315,63 @@ header h1 {
 	line-height: 1.5;
 }
 
+.tabla-grupos-contenedor {
+	overflow-x: auto;
+	border: 1px solid var(--borde);
+	border-radius: 10px;
+	background: #fff;
+}
+
+.tabla-grupos {
+	width: 100%;
+	min-width: 640px;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+.tabla-grupos caption {
+	padding: 16px;
+	color: var(--azul);
+	font-weight: 700;
+	text-align: left;
+}
+
+.tabla-grupos th,
+.tabla-grupos td {
+	padding: 13px 16px;
+	border-top: 1px solid var(--borde);
+	font-size: 14px;
+}
+
+.tabla-grupos thead th {
+	background: #edf4fc;
+	color: var(--azul);
+	font-size: 13px;
+}
+
+.tabla-grupos tbody th {
+	font-weight: 700;
+}
+
+.boton-seleccionar-grupo {
+	padding: 8px 14px;
+	border: 0;
+	border-radius: 6px;
+	background: var(--azul);
+	color: #fff;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.boton-seleccionar-grupo:hover {
+	background: var(--azul2);
+}
+
+
+
+
+
 @media (max-width: 850px) {
 	aside {
 		width: 210px;
@@ -360,6 +427,7 @@ header h1 {
 	}
 
 	.logo-sirca-header {
+		left: 17px;
 		height: 38px;
 	}
 
