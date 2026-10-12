@@ -1,0 +1,166 @@
+/* --- DISEÑO INSTITUCIONAL SIRCA --- */
+.calificaciones-layout {
+    display: flex;
+    background: #ffffff; /* Fondo blanco de la tarjeta */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #e2e8f0; /* Borde sutil exterior */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    height: 100%;
+    overflow: hidden; 
+}
+
+/* Menú lateral (Unidades) */
+.calificaciones-sidebar {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e2e8f0;
+    background-color: #ffffff;
+}
+.titulo-lista {
+    color: #1b365d; /* Texto azul oscuro del título */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px 20px;
+    margin: 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+.lista-unidades { 
+    list-style: none; 
+    padding: 15px; 
+    margin: 0; 
+    flex-grow: 1; 
+}
+.lista-unidades li {
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    color: #4a5568;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+.lista-unidades li:hover { background: #f0f4f8; }
+.lista-unidades li.activo { 
+    background: #1b365d; /* Fondo azul oscuro del botón */
+    color: #ffffff; 
+    font-weight: bold; 
+}
+
+/* Contenido Principal y Tabla */
+.calificaciones-contenido { 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+    padding: 0; 
+}
+.encabezado-tabla { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+.titulo-alumnos { 
+    color: #1b365d; 
+    font-size: 16px; 
+    font-weight: bold; 
+    margin: 0;
+}
+
+/* Tabla estilo SIRCA */
+.tabla-excel-contenedor {
+    padding: 0;
+    overflow-x: auto;
+}
+.tabla-excel { 
+    width: 100%; 
+    border-collapse: collapse; 
+    text-align: left; 
+}
+.tabla-excel th { 
+    background: #f0f4f8; /* Fondo azul claro del encabezado de tabla */
+    color: #1b365d; /* Texto azul oscuro */
+    font-weight: bold; 
+    padding: 12px 20px; 
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+}
+.tabla-excel td { 
+    padding: 12px 20px; 
+    border-bottom: 1px solid #e2e8f0; 
+    vertical-align: middle;
+    color: #333333;
+    font-size: 14px;
+}
+
+/* Celdas de calificación (Inputs) */
+.celda-input { 
+    width: 60px; 
+    padding: 6px;
+    border: 1px solid #e2e8f0; 
+    border-radius: 4px;
+    background: #ffffff; 
+    text-align: center; 
+    font-size: 14px; 
+    color: #333;
+    outline: none; 
+}
+.celda-input:focus { 
+    border-color: #1b365d; 
+    box-shadow: 0 0 0 2px rgba(27, 54, 93, 0.2);
+}
+
+/* Colores de filas por promedio (Indicador lateral elegante) */
+.fila-aprobado td:first-child { border-left: 4px solid #48bb78; } 
+.fila-reprobado td:first-child { border-left: 4px solid #f56565; }
+
+/* === BOTONES INSTITUCIONALES === */
+.btn-regresar, .btn-generar-reporte, .btn-detalles { 
+    background: #1b365d; /* Mismo azul del botón 'Seleccionar' */
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+.btn-regresar:hover, .btn-generar-reporte:hover, .btn-detalles:hover { 
+    background: #122540; 
+}
+
+.btn-agregar-fila { 
+    background: transparent; 
+    border: none; 
+    color: #1b365d; 
+    font-weight: 500; 
+    padding: 15px 20px; 
+    cursor: pointer; 
+    text-align: left; 
+    width: 100%;
+}
+.btn-agregar-fila:hover { background: #f0f4f8; }
+
+.btn-graficas, .btn-importar {
+    background: white;
+    color: #1b365d;
+    border: 1px solid #1b365d;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-graficas { margin: 15px; }
+.btn-graficas:hover, .btn-importar:hover { 
+    background: #f0f4f8; 
+}
+
+/* Contenedor de botones inferiores */
+.calificaciones-pie { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 15px; 
+    padding: 20px;
+    border-top: 1px solid #e2e8f0;
+}

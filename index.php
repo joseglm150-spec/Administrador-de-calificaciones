@@ -41,7 +41,7 @@
 
         <nav class="footer-links" aria-label="Opciones de acceso">
             <a class="recovery-link" href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>
-            <a class="temporary-menu-link" href="menu.php">Entrar al menú temporalmente</a>
+            <a class="temporary-menu-link" href="/administrador-de-calificaciones/views/layout/menu.php">Entrar al menú temporalmente</a>
         </nav>
 
         <p>Copyright © 2026 SIRCA - Todos los Derechos Reservados</p>
