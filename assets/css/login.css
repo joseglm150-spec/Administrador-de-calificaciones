@@ -1,3 +1,12 @@
+:root {
+	--azul: #19396A;
+	--azul2: #1d3fa6;
+	--fondo: #f3f6fb;
+	--texto: #26364a;
+	--gris: #718096;
+	--borde: #e3eaf2;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,6 +22,7 @@
     height: 90px; /* Altura de la barra */
     display: flex;
     align-items: center; /* Centra el logo verticalmente */
+    justify-content: center;
     padding: 0 10px; /* Da un espacio de 20px a los lados */
     box-sizing: border-box; /* Asegura que el padding no desborde el ancho */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Opcional: sombra sutil para separarla del fondo */
@@ -22,6 +32,16 @@
     top: 0;
     left: 0;
     z-index: 1000; /* Asegura que la barra siempre esté por encima del resto */
+    /* Estilo del titulo en la barra */
+}
+
+/* Estilos del título en la barra */
+h2 {
+    color: var(--azul);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
 }
 
 .logo-tecnm{
@@ -74,6 +94,7 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     text-align: center;
 }
+
 
 
 .input-group {

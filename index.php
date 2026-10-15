@@ -12,7 +12,7 @@
 <body>
     <!-- Barra superior con los logos -->
     <header class="top-bar">
-        
+        <h2>INICIAR SESIÓN</h2>
     </header>
 
     <!-- Contenedor del formulario de inicio de sesión -->
