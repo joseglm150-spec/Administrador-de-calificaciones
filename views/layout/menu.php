@@ -1,4 +1,5 @@
 <?php
+session_start();
 $nombreUsuario = $_SESSION['nombre'] ?? 'Administrador';
 ?>
 <!DOCTYPE html>

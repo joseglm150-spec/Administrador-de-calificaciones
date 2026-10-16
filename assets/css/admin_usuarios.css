@@ -1,0 +1,183 @@
+:root {
+    --azul: #19396A;
+    --azul2: #1d3fa6;
+    --fondo: #f3f6fb;
+    --texto: #26364a;
+    --gris: #718096;
+    --borde: #e3eaf2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Estilos de la barra superior */
+.top-bar {
+    background-color: #ffffff;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+h2 {
+    color: var(--azul);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+}
+
+.logo-tecnm{
+    height: 70px;
+    width: auto;
+    top: 1px;
+    left: 1px;
+}
+
+.logo-itesp {
+    height: 60px;
+    width: auto;
+    margin-left: auto;
+}
+
+.logo-SIRCA{
+    height: 165px;
+    width: auto;
+    padding: 1px;
+    margin-bottom: 20px;
+}
+
+body {
+    background-color: #B1B3B3;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 800px; /* Aumentado a 800px para que las dos columnas quepan bien */
+    height: auto;
+    min-height: 600px;
+    padding: 30px 40px 30px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* --- CONFIGURACIÓN DEL GRID DE 2 COLUMNAS --- */
+.grid-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide en 2 columnas iguales */
+    gap: 20px; /* Espacio entre filas y columnas */
+    margin-bottom: 20px;
+}
+
+.ancho-completo {
+    grid-column: 1 / -1; /* Permite que el Rol ocupe toda la fila inferior */
+}
+
+/* Se elimina el margin-bottom de input-group porque el 'gap' del grid ya separa los elementos */
+.input-group {
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 16px;
+    color: #333333;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Se agrupan los estilos para input y select */
+.input-group input,
+.input-group select {
+    width: 100%;
+    height: 45px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #333;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+    color: #a0a0a0;
+}
+
+/* ------------------------------------------- */
+
+.btn-submit {
+    width: 100%;
+    height: 50px;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #19396A;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #1d3fa6;
+}
+
+.error-message {
+    margin-top: 12px;
+    color: #b42318;
+    font-size: 14px;
+}
+
+p {
+    font-size: 12px;
+    color: #a0a0a0;
+    margin-top: 50px;
+}
+
+/* --- DISEÑO RESPONSIVO --- */
+@media (max-width: 768px) {
+    .grid-formulario {
+        grid-template-columns: 1fr; /* Convierte a 1 sola columna en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 600px) {
+    .top-bar {
+        padding: 0 15px;
+    }
+    
+    .top-bar img {
+        max-height: 50px;
+    }
+
+    .logo-itesp {
+        height: 45px;
+    }
+
+    .login-container {
+        padding: 30px 20px;
+    }
+}

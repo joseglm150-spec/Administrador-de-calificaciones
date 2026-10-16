@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrador de Calificaciones</title>
     <!-- Vincula el archivo CSS -->
-    <link rel="stylesheet" href="../../assets/css/login.css">
-    
+    <link rel="stylesheet" href="../../assets/css/admin_usuarios.css">
 </head>
 
 <body>
@@ -15,61 +14,60 @@
         <h2>AGREGAR USUARIO</h2>
     </header>
 
-    <!-- Contenedor del formulario de inicio de sesión -->
+    <!-- Contenedor del formulario -->
     <div class="login-container">
-        <img src="../../assets/img/SIRCA.jpeg" alt="Logo de el sistema" class="logo-SIRCA">
+        <!-- El logo queda fuera del grid para mantenerse centrado -->
+        <img src="../../assets/img/SIRCA.jpeg" alt="Logo del sistema" class="logo-SIRCA">
 
         <form action="../../controllers/docentes/registrar_docente.php" method="POST">
-        <!-- id -->
-            <div class="input-group">
-                <label for="id_usuario">ID de usuario</label>
-                <input type="text" id="id_usuario" name="id_usuario" placeholder="Ingrese el ID de usuario" required>              
-            </div>    
-        
-        <!-- Nombre de usuario -->
-            <div class="input-group">
-                <label for="rfc">RFC</label>
-                <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC" required>              
-            </div>
             
-            <!-- Nombre de usuario -->
-            <div class="input-group">
-                <label for="nombre_usuario">Nombre de usuario</label>
-                <input type="text" id="nombre_usuario" name="nombre_usuario" placeholder="Ingrese su nombre de usuario" required>
-            </div>
-
-            <!-- Contraseña -->
-            <div class="input-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+            <!-- INICIO DEL GRID PARA LOS INPUTS -->
+            <div class="grid-formulario">
                 
+                <!-- ID -->
+                <div class="input-group">
+                    <label for="id_usuario">ID de usuario</label>
+                    <input type="text" id="id_usuario" name="id_usuario" placeholder="Ingrese el ID de usuario" required>              
+                </div>    
+            
+                <!-- RFC -->
+                <div class="input-group">
+                    <label for="rfc">RFC</label>
+                    <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC" required>              
+                </div>
+                
+                <!-- Nombre de usuario -->
+                <div class="input-group">
+                    <label for="nombre_usuario">Nombre de usuario</label>
+                    <input type="text" id="nombre_usuario" name="nombre_usuario" placeholder="Ingrese su nombre de usuario" required>
+                </div>
+
+                <!-- Contraseña -->
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                </div>
+
+                <!-- Rol (Clase 'ancho-completo' para que abarque las dos columnas si queda impar) -->
+                <div class="input-group ancho-completo">
+                    <label for="rol">Rol</label>
+                    <select id="rol" name="rol" required>
+                        <option value="DOCENTE">DOCENTE</option>
+                        <option value="administrador">Administrador</option>
+                        <option value="jefe_de_división">Jefe de División</option>
+                    </select>
+                </div>
+
             </div>
+            <!-- FIN DEL GRID -->
 
-            <!-- Rol -->
-            <div class="input-group">
-                <label for="rol">Rol</label>
-                <select id="rol" name="rol" required>
-                    <option value="DOCENTE">DOCENTE</option>
-                    <option value="administrador">Administrador</option>
-                    <option value="jefe_de_división">Jefe de División</option>
-
-                </select>
-            </div>
-
-            <!-- Botón dar de alta -->
+            <!-- Botón dar de alta (Fuera del grid) -->
             <div class="checkbox-group">
                 <button type="submit" class="btn-submit">Dar de Alta</button>
             </div> 
         </form>
 
-        
-
         <p>Copyright © 2026 SIRCA - Todos los Derechos Reservados</p>
-
-            
     </div>
 </body>
 </html>
-
-
-

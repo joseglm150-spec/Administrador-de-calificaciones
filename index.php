@@ -19,29 +19,30 @@
     <div class="login-container">
         <img src="assets/img/SIRCA.jpeg" alt="Logo de el sistema" class="logo-SIRCA">
 
-        <form>
-            <!-- Nombre de usuario -->
+        <form action="controllers/auth/login.php" method="POST">
+            <!-- RFC -->
             <div class="input-group">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Ingrese su nombre de usuario" required>              
+                <label for="rfc">RFC</label>
+                <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC" maxlength="13" autocomplete="username" required>
             </div>
             
             <!-- Contraseña -->
             <div class="input-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
-                
+                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" autocomplete="current-password" required>
             </div>
 
             <!-- Botón acceder -->
             <div class="checkbox-group">
                 <button type="submit" class="btn-submit">Acceder</button>
+                <?php if (isset($_GET['error'])): ?>
+                    <p class="error-message">RFC y/o contraseña incorrectos.</p>
+                <?php endif; ?>
             </div> 
         </form>
 
         <nav class="footer-links" aria-label="Opciones de acceso">
-            <a class="recovery-link" href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>
-            <a class="temporary-menu-link" href="/administrador-de-calificaciones/views/layout/menu.php">Entrar al menú temporalmente</a>
+            <a class="recovery-link" href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>   
         </nav>
 
         <p>Copyright © 2026 SIRCA - Todos los Derechos Reservados</p>
@@ -51,4 +52,3 @@
     
 </body>
 </html>
-
