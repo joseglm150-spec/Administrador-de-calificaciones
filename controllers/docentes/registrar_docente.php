@@ -2,9 +2,6 @@
 // 1. Llamar a tu archivo de conexión
 require '../../config/conecction.php'; 
 
-// IMPORTANTE: Asegúrate de que la variable de conexión dentro de 'conexion.php' 
-// se llame $pdo. Si se llama $conexion, $conn u otra cosa, 
-// cambia todos los $pdo que están abajo por el nombre de tu variable.
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
