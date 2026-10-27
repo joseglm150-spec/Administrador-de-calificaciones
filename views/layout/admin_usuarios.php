@@ -19,7 +19,7 @@
         <!-- El logo queda fuera del grid para mantenerse centrado -->
         <img src="../../assets/img/SIRCA.jpeg" alt="Logo del sistema" class="logo-SIRCA">
 
-        <form action="../../controllers/docentes/registrar_docente.php" method="POST">
+        <form action="../../controllers/docentes/registrar_docente_controller.php" method="POST">
             
             <!-- INICIO DEL GRID PARA LOS INPUTS -->
             <div class="grid-formulario">

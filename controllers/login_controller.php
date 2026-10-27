@@ -1,8 +1,8 @@
 <?php
-require '../../config/conecction.php';
+require '../config/conection.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -12,14 +12,14 @@ $rfcIngresado = $_POST['rfc'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (!is_string($rfcIngresado) || !is_string($password)) {
-    header('Location: ../../index.php?error=1');
+    header('Location: ../index.php?error=1');
     exit;
 }
 
 $rfc = strtoupper(trim($rfcIngresado));
 
 if ($rfc === '' || $password === '') {
-    header('Location: ../../index.php?error=1');
+    header('Location: ../index.php?error=1');
     exit;
 }
 
@@ -36,7 +36,7 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // password_verify se encarga de validar la contraseña
 if (!$usuario || !password_verify($password, $usuario['password_hash'])) {
-    header('Location: ../../index.php?error=1');
+    header('Location: ../index.php?error=1');
     exit;
 }
 
@@ -50,5 +50,5 @@ $_SESSION['rfc'] = $rfc;
 $_SESSION['nombre'] = $usuario['nombre_usuario'];
 $_SESSION['rol'] = $usuario['rol'];
 
-header('Location: ../../views/layout/menu.php');
+header('Location: ../views/layout/menu.php');
 exit;
