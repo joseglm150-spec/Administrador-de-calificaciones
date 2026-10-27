@@ -19,7 +19,7 @@
     <div class="login-container">
         <img src="assets/img/SIRCA.jpeg" alt="Logo de el sistema" class="logo-SIRCA">
 
-        <form action="controllers/auth/login.php" method="POST">
+        <form action="controllers/login_controller.php" method="POST">
             <!-- RFC -->
             <div class="input-group">
                 <label for="rfc">RFC</label>

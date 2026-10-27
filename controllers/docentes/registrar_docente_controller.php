@@ -1,6 +1,6 @@
 <?php
 // 1. Llamar a tu archivo de conexión
-require '../../config/conecction.php'; 
+require '../../config/conection.php'; 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
