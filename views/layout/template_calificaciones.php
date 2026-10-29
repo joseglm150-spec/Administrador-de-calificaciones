@@ -1,52 +1,80 @@
+<link rel="stylesheet" href="../../assets/css/calificaciones.css">
 <div class="calificaciones-layout">
     <aside class="calificaciones-sidebar">
         <h3 class="titulo-lista">Lista general</h3>
-        <ul class="lista-unidades">
-            <li class="activo">General</li>
-            <li>Unidad 1</li>
-            <li>Unidad 2</li>
-            <li>Unidad 3</li>
-            <li>Unidad 4</li>
-            <li>Unidad 5</li>
+        <ul class="lista-unidades" id="nav-unidades">
+            <!-- Se agregó el atributo data-vista para identificar qué unidad se clickea -->
+            <li class="activo" data-unidad="General">General</li>
+            <li data-unidad="Unidad 1">Unidad 1</li>
+            <li data-unidad="Unidad 2">Unidad 2</li>
+            <li data-unidad="Unidad 3">Unidad 3</li>
+            <li data-unidad="Unidad 4">Unidad 4</li>
+            <li data-unidad="Unidad 5">Unidad 5</li>
         </ul>
-        <button class="btn-graficas">📊 Gráficas</button>
+        <button class="btn-graficas" id="btn-nav-graficas">📊 Gráficas</button>
     </aside>
 
     <section class="calificaciones-contenido">
         <div class="encabezado-tabla">
-            <h3 class="titulo-alumnos">Lista de alumnos</h3>
+            <!-- Se agregó un span con ID para cambiar el título dinámicamente -->
+            <h3 class="titulo-alumnos">Lista de alumnos - <span id="titulo-vista-actual">General</span></h3>
             <button class="btn-regresar" id="btn-volver-grupos">⬅ Volver a Grupos</button>
         </div>
 
-        <div class="tabla-excel-contenedor">
-            <table class="tabla-excel">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>U1</th>
-                        <th>U2</th>
-                        <th>U3</th>
-                        <th>FINAL</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="fila-aprobado">
-                        <td>Aguilar Garcia Daniel</td>
-                        <td><input type="number" class="celda-input" value="90"></td>
-                        <td><input type="number" class="celda-input" value="85"></td>
-                        <td><input type="number" class="celda-input" value="95"></td>
-                        <td><strong>90</strong></td>
-                        <td><button class="btn-detalles">Detalles</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn-agregar-fila">+ Agregar</button>
+        <!-- CONTENEDOR 1: TABLA (Visible por defecto) -->
+        <div id="contenedor-tabla-excel">
+            <div class="tabla-excel-contenedor">
+                <table class="tabla-excel">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <!-- Agregamos la clase col-dinamica para controlarlos desde JS -->
+                            <th class="col-dinamica">U1</th>
+                            <th class="col-dinamica">U2</th>
+                            <th class="col-dinamica">U3</th>
+                            <th>FINAL</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fila-aprobado">
+                            <td>Aguilar Garcia Daniel</td>
+                            <td><input type="number" class="celda-input" value="0"></td>
+                            <td><input type="number" class="celda-input" value="0"></td>
+                            <td><input type="number" class="celda-input" value="0"></td>
+                            <td><strong>0</strong></td>
+                            <td><button class="btn-detalles">Detalles</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+
+                </table>
+        
+        <!-- NUEVO CONTENEDOR DE BOTONES -->
+        <div class="controles-tabla">
+            <button class="btn-agregar-fila" id="btn-agregar-alumno">+ Agregar Alumno</button>
+            <button class="btn-secundario" id="btn-agregar-col" style="display: none;">+ Añadir Entregable</button>
+            <button class="btn-peligro" id="btn-eliminar-col" style="display: none;">- Eliminar Entregable</button>
+        </div>
+        
+    </div> <!-- Cierre de tabla-excel-contenedor -->
+            </div>
+
+            <div class="calificaciones-pie">
+                <button class="btn-importar">📥 Importar lista desde excel</button>
+                <button class="btn-generar-reporte">📄 Generar reporte final</button>
+            </div>
         </div>
 
-        <div class="calificaciones-pie">
-            <button class="btn-importar">📥 Importar lista desde excel</button>
-            <button class="btn-generar-reporte">📄 Generar reporte final</button>
+        <!-- CONTENEDOR 2: GRÁFICAS (Oculto por defecto) -->
+        <div id="contenedor-graficas" style="display: none;">
+            <article class="tarjeta vista-informativa" style="margin-top: 2rem; text-align: center;">
+                <div class="icono-tarjeta" style="font-size: 3rem;">📊</div>
+                <h3>Estadísticas de Aprobación</h3>
+                <p class="aviso">Aquí se renderizarán las gráficas de esta materia.</p>
+            </article>
         </div>
     </section>
+    <script src="../../assets/js/menu.js" defer></script>
 </div>
