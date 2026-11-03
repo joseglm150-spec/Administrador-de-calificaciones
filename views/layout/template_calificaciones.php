@@ -23,49 +23,100 @@
 
         <!-- CONTENEDOR 1: TABLA (Visible por defecto) -->
         <div id="contenedor-tabla-excel">
-            <div class="tabla-excel-contenedor">
-                <table class="tabla-excel">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <!-- Agregamos la clase col-dinamica para controlarlos desde JS -->
-                            <th class="col-dinamica">U1</th>
-                            <th class="col-dinamica">U2</th>
-                            <th class="col-dinamica">U3</th>
-                            <th>FINAL</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="fila-aprobado">
-                            <td>Aguilar Garcia Daniel</td>
-                            <td><input type="number" class="celda-input" value="0"></td>
-                            <td><input type="number" class="celda-input" value="0"></td>
-                            <td><input type="number" class="celda-input" value="0"></td>
-                            <td><strong>0</strong></td>
-                            <td><button class="btn-detalles">Detalles</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
+           <div class="tabla-excel-contenedor">
+            <table class="tabla-excel">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th class="col-dinamica">U1</th>
+                        <th class="col-dinamica">U2</th>
+                        <th class="col-dinamica">U3</th>
+                        <th>FINAL</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ALUMNO FALSO 1: Usamos data-id-alumno="00000001" -->
+                    <tr class="fila-aprobado" data-id-alumno="00000001">
+                        <td>Alumno de Prueba 1</td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><strong>0</strong></td>
+                        <td><button class="btn-detalles">Detalles</button></td>
+                    </tr>
+                    
+                    <!-- ALUMNO FALSO 2: Usamos data-id-alumno="00000002" -->
+                    <tr class="fila-reprobado" data-id-alumno="00000002">
+                        <td>Alumno de Prueba 2</td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><strong>0</strong></td>
+                        <td><button class="btn-detalles">Detalles</button></td>
+                    </tr>
 
-                </table>
-        
-        <!-- NUEVO CONTENEDOR DE BOTONES -->
-        <div class="controles-tabla">
-            <button class="btn-agregar-fila" id="btn-agregar-alumno">+ Agregar Alumno</button>
-            <button class="btn-secundario" id="btn-agregar-col" style="display: none;">+ Añadir Entregable</button>
-            <button class="btn-peligro" id="btn-eliminar-col" style="display: none;">- Eliminar Entregable</button>
+                    <!-- ALUMNO FALSO 2: Usamos data-id-alumno="00000002" -->
+                    <tr class="fila-reprobado" data-id-alumno="00000002">
+                        <td>Alumno de Prueba 2</td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><strong>0</strong></td>
+                        <td><button class="btn-detalles">Detalles</button></td>
+                    </tr>
+
+                    <!-- ALUMNO FALSO 2: Usamos data-id-alumno="00000002" -->
+                    <tr class="fila-reprobado" data-id-alumno="00000002">
+                        <td>Alumno de Prueba 2</td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><strong>0</strong></td>
+                        <td><button class="btn-detalles">Detalles</button></td>
+                    </tr>
+
+                    <!-- ALUMNO FALSO 2: Usamos data-id-alumno="00000002" -->
+                    <tr class="fila-reprobado" data-id-alumno="00000002">
+                        <td>Alumno de Prueba 2</td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><strong>0</strong></td>
+                        <td><button class="btn-detalles">Detalles</button></td>
+                    </tr>
+
+                    <!-- ALUMNO FALSO 2: Usamos data-id-alumno="00000002" -->
+                    <tr class="fila-reprobado" data-id-alumno="00000002">
+                        <td>Alumno de Prueba 2</td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><input type="number" class="celda-input" value=""></td>
+                        <td><strong>0</strong></td>
+                        <td><button class="btn-detalles">Detalles</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="controles-tabla">
+                <button class="btn-agregar-fila" id="btn-agregar-alumno">+ Agregar Alumno</button>
+                <button class="btn-secundario" id="btn-agregar-col" style="display: none;">+ Añadir Entregable</button>
+            </div>
         </div>
-        
-    </div> <!-- Cierre de tabla-excel-contenedor -->
+
+        <!-- AQUÍ AÑADIMOS EL BOTÓN DE GUARDADO -->
+        <div class="calificaciones-pie">
+            <button class="btn-importar">📥 Importar lista desde excel</button>
+            <button class="btn-secundario" id="btn-guardar-calificaciones" style="background-color: #007bff;"> Guardar Cambios</button> 
+            <button class="btn-generar-reporte">📄 Generar reporte final</button>
+        </div> <!-- Cierre de tabla-excel-contenedor -->
             </div>
 
             <div class="calificaciones-pie">
                 <button class="btn-importar">📥 Importar lista desde excel</button>
                 <button class="btn-generar-reporte">📄 Generar reporte final</button>
             </div>
-        </div>
+            </div>
 
         <!-- CONTENEDOR 2: GRÁFICAS (Oculto por defecto) -->
         <div id="contenedor-graficas" style="display: none;">
