@@ -147,6 +147,7 @@ document.addEventListener('click', function(e) {
         e.target.classList.add('activo');
         
         const unidadSeleccionada = e.target.dataset.unidad;
+        actualizarIndicador(vistaActiva);
 
         const spanTitulo = vistaActiva.querySelector('.titulo-vista-actual');
         if (spanTitulo) spanTitulo.textContent = unidadSeleccionada;
@@ -188,6 +189,11 @@ document.addEventListener('click', function(e) {
         nuevoTh.dataset.vista = unidadActual; 
         
         theadRow.insertBefore(nuevoTh, finalTh);
+
+        const filaValores = vistaActiva.querySelector('.tabla-excel thead .fila-valores');
+        const finalValTh = filaValores.querySelector('th:nth-last-child(2)');
+        filaValores.insertBefore(crearCeldaValor(unidadActual, 0), finalValTh);
+        actualizarIndicador(vistaActiva);
         
         const filas = vistaActiva.querySelectorAll('.tabla-excel tbody tr');
         filas.forEach(fila => {
@@ -210,12 +216,20 @@ document.addEventListener('click', function(e) {
             unidades: []
         };
 
-        const nombresUnidades = ['Unidad 1', 'Unidad 2', 'Unidad 3', 'Unidad 4', 'Unidad 5'];
-        const filasAlumnos = vistaActiva.querySelectorAll('.tabla-excel tbody tr');
+        const nombresUnidades = Array.from(vistaActiva.querySelectorAll('.lista-unidades li[data-unidad]'))
+            .map(li => li.dataset.unidad)
+            .filter(u => u !== 'General');
+        const filasAlumnos = vistaActiva.querySelectorAll('.tabla-excel tbody tr[data-id-alumno]');
 
+        const errores = [];
         nombresUnidades.forEach(nombreUnidad => {
-            const thsUnidad = vistaActiva.querySelectorAll(`th.col-dinamica[data-vista="${nombreUnidad}"]`);
+            const thsUnidad = vistaActiva.querySelectorAll(`th.col-dinamica.encabezado-editable[data-vista="${nombreUnidad}"]`);
             const nombresColumnas = Array.from(thsUnidad).map(th => th.textContent.trim());
+
+            const valores = Array.from(vistaActiva.querySelectorAll(`th.col-valor[data-vista="${nombreUnidad}"] input`))
+                .map(inp => parseFloat(inp.value) || 0);
+            const sumaValores = valores.reduce((a, b) => a + b, 0);
+            if (Math.abs(sumaValores - 100) > 0.01) errores.push(`${nombreUnidad}: suma ${sumaValores}% (debe ser 100%)`);
 
             const alumnosData = [];
             filasAlumnos.forEach(fila => {
@@ -232,9 +246,15 @@ document.addEventListener('click', function(e) {
             payload.unidades.push({
                 unidad: nombreUnidad,
                 columnas: nombresColumnas,
+                valores: valores,
                 alumnos: alumnosData
             });
         });
+
+        if (errores.length) {
+            alert('Los valores de los entregables deben sumar 100% en cada unidad:\n\n' + errores.join('\n'));
+            return;
+        }
 
         const textoOriginal = btnGuardar.textContent;
         btnGuardar.textContent = '⏳ Guardando todo...';
@@ -278,7 +298,7 @@ document.addEventListener('contextmenu', function(e) {
         if (!tabActivo) return;
         
         const unidadActual = tabActivo.dataset.unidad;
-        const columnasDeEstaUnidad = vistaActiva.querySelectorAll(`th.col-dinamica[data-vista="${unidadActual}"]`);
+        const columnasDeEstaUnidad = vistaActiva.querySelectorAll(`th.col-dinamica.encabezado-editable[data-vista="${unidadActual}"]`);
         
         if (columnasDeEstaUnidad.length <= 1) {
             alert('Debe haber al menos un entregable por unidad.');
@@ -293,12 +313,16 @@ document.addEventListener('contextmenu', function(e) {
             const indiceColumna = Array.from(trPadre.children).indexOf(thSeleccionado);
 
             thSeleccionado.remove();
+            const filaValoresDel = vistaActiva.querySelector('.tabla-excel thead .fila-valores');
+            if (filaValoresDel && filaValoresDel.children[indiceColumna]) filaValoresDel.children[indiceColumna].remove();
 
             const filasAlumnos = vistaActiva.querySelectorAll('.tabla-excel tbody tr');
             filasAlumnos.forEach(fila => {
                 const celdas = fila.children;
                 if (celdas[indiceColumna]) celdas[indiceColumna].remove();
             });
+            recalcularTodo(vistaActiva);
+            actualizarIndicador(vistaActiva);
         }
     }
 });
@@ -308,52 +332,211 @@ document.addEventListener('contextmenu', function(e) {
 // ==========================================
 function construirTablaConDatos(vistaActiva, datosBD) {
     const thead = vistaActiva.querySelector('.tabla-excel thead tr');
-    const filas = vistaActiva.querySelectorAll('.tabla-excel tbody tr');
+    const tbody = vistaActiva.querySelector('.tabla-excel tbody');
 
-    // Asignar los identificadores a la vista 'General' predeterminada
-    const thsOriginales = thead.querySelectorAll('th.col-dinamica');
-    thsOriginales.forEach(th => th.dataset.vista = 'General');
+    // Número de unidades de la materia (BD: materias.total_unidades, entre 4 y 7)
+    let totalUnidades = parseInt(datosBD.total_unidades, 10);
+    if (isNaN(totalUnidades)) totalUnidades = 4;
+    totalUnidades = Math.min(7, Math.max(4, totalUnidades));
+    vistaActiva.dataset.totalUnidades = totalUnidades;
 
-    filas.forEach(fila => {
-        const celdas = fila.children;
-        if (celdas[1]) celdas[1].dataset.vista = 'General';
-        if (celdas[2]) celdas[2].dataset.vista = 'General';
-        if (celdas[3]) celdas[3].dataset.vista = 'General';
+    // ---- Barra lateral: General + Unidad 1..N ----
+    const listaUnidades = vistaActiva.querySelector('.lista-unidades');
+    listaUnidades.querySelectorAll('li:not([data-unidad="General"])').forEach(li => li.remove());
+    for (let i = 1; i <= totalUnidades; i++) {
+        const li = document.createElement('li');
+        li.dataset.unidad = 'Unidad ' + i;
+        li.textContent = 'Unidad ' + i;
+        listaUnidades.appendChild(li);
+    }
+
+    // ---- Encabezado de la vista General: U1..UN (reemplaza los 3 fijos) ----
+    thead.querySelectorAll('th.col-dinamica').forEach(th => th.remove());
+    const finalThBase = thead.querySelector('th:nth-last-child(2)'); // FINAL
+
+    // Segunda fila del encabezado: valor (%) de cada entregable
+    const filaValores = document.createElement('tr');
+    filaValores.className = 'fila-valores';
+    filaValores.innerHTML = '<th>Valor (%)</th>';
+    for (let i = 1; i <= totalUnidades; i++) {
+        const thv = document.createElement('th');
+        thv.className = 'col-dinamica col-valor';
+        thv.dataset.vista = 'General';
+        filaValores.appendChild(thv);
+    }
+    filaValores.insertAdjacentHTML('beforeend', '<th></th><th></th>');
+    thead.parentNode.appendChild(filaValores);
+
+    // Indicador de suma de valores (solo en vistas de unidad)
+    if (!vistaActiva.querySelector('.indicador-suma-valores')) {
+        const ind = document.createElement('div');
+        ind.className = 'indicador-suma-valores';
+        ind.style.cssText = 'display:none; margin:.75rem 0; font-weight:600;';
+        const controles = vistaActiva.querySelector('.controles-tabla');
+        controles.parentNode.insertBefore(ind, controles);
+    }
+    for (let i = 1; i <= totalUnidades; i++) {
+        const th = document.createElement('th');
+        th.className = 'col-dinamica';
+        th.textContent = 'U' + i;
+        th.dataset.vista = 'General';
+        thead.insertBefore(th, finalThBase);
+    }
+
+    // ---- Alumnos inscritos ----
+    tbody.innerHTML = '';
+    const alumnosBD = (datosBD.exito && datosBD.alumnos) ? datosBD.alumnos : [];
+
+    if (alumnosBD.length === 0) {
+        const filaVacia = document.createElement('tr');
+        filaVacia.innerHTML = `<td colspan="${totalUnidades + 3}" style="text-align:center; padding:1.5rem;">No hay alumnos inscritos en este grupo.</td>`;
+        tbody.appendChild(filaVacia);
+    }
+
+    alumnosBD.forEach(alu => {
+        const tr = document.createElement('tr');
+        tr.className = 'fila-reprobado';
+        tr.dataset.idAlumno = alu.no_de_control;
+
+        const tdNombre = document.createElement('td');
+        tdNombre.textContent = `${alu.apellidos} ${alu.nombres}`;
+        tr.appendChild(tdNombre);
+
+        // Promedio por unidad (solo lectura, se calcula con los entregables)
+        for (let i = 1; i <= totalUnidades; i++) {
+            const td = document.createElement('td');
+            td.dataset.vista = 'General';
+            td.dataset.promedioUnidad = 'Unidad ' + i;
+            td.textContent = '-';
+            tr.appendChild(td);
+        }
+
+        const tdFinal = document.createElement('td');
+        tdFinal.innerHTML = '<strong>0</strong>';
+        tr.appendChild(tdFinal);
+
+        const tdAcc = document.createElement('td');
+        tdAcc.innerHTML = '<button class="btn-detalles">Detalles</button>';
+        tr.appendChild(tdAcc);
+
+        tbody.appendChild(tr);
     });
 
-    // Agrupar los entregables de la base de datos por su Unidad
-    const entregablesPorUnidad = {
-        'Unidad 1': [], 'Unidad 2': [], 'Unidad 3': [], 'Unidad 4': [], 'Unidad 5': []
-    };
-    
+    const filas = tbody.querySelectorAll('tr[data-id-alumno]');
+
+    // ---- Agrupar entregables de la BD por unidad ----
+    const entregablesPorUnidad = {};
+    for (let i = 1; i <= totalUnidades; i++) entregablesPorUnidad['Unidad ' + i] = [];
+
     if (datosBD.exito && datosBD.entregables) {
         datosBD.entregables.forEach(ent => {
-            if (entregablesPorUnidad[ent.unidad]) {
-                entregablesPorUnidad[ent.unidad].push(ent);
-            }
+            if (entregablesPorUnidad[ent.unidad]) entregablesPorUnidad[ent.unidad].push(ent);
         });
     }
 
-    // Dibujar las columnas ocultas para cada unidad
-    for (let i = 1; i <= 5; i++) {
+    // ---- Columnas (ocultas) de cada unidad ----
+    for (let i = 1; i <= totalUnidades; i++) {
         const nombreVista = 'Unidad ' + i;
-        const finalTh = thead.querySelector('th:nth-last-child(2)'); 
+        const finalTh = thead.querySelector('th:nth-last-child(2)');
         const entsUnidad = entregablesPorUnidad[nombreVista];
-        
+
         if (entsUnidad.length === 0) {
-            // Si la unidad está en blanco (no hay datos), le ponemos 1 Entregable por defecto
-            crearColumnaBD(thead, filas, nombreVista, 'Entregables', null, [], finalTh);
+            crearColumnaBD(thead, filas, nombreVista, 'Entregables', null, [], finalTh, 0);
         } else {
-            // Recrear exactamente las columnas con los nombres que el docente guardó
             entsUnidad.forEach(ent => {
-                crearColumnaBD(thead, filas, nombreVista, ent.nombre, ent.id_entregable, datosBD.calificaciones || [], finalTh);
+                crearColumnaBD(thead, filas, nombreVista, ent.nombre, ent.id_entregable, datosBD.calificaciones || [], finalTh, parseFloat(ent.valor) || 0);
             });
         }
     }
+
+    // Unidades sin valores guardados (suma 0): repartir 100% en partes iguales
+    for (let i = 1; i <= totalUnidades; i++) {
+        const inputs = vistaActiva.querySelectorAll(`th.col-valor[data-vista="Unidad ${i}"] input`);
+        const suma = Array.from(inputs).reduce((a, inp) => a + (parseFloat(inp.value) || 0), 0);
+        if (inputs.length && suma === 0) {
+            const base = Math.floor(10000 / inputs.length) / 100;
+            inputs.forEach(inp => inp.value = base);
+            inputs[inputs.length - 1].value = Math.round((100 - base * (inputs.length - 1)) * 100) / 100;
+        }
+    }
+
+    // Recalcular al editar una nota o un valor
+    vistaActiva.addEventListener('input', e => {
+        if (e.target.matches('.celda-input')) recalcularFila(e.target.closest('tr'));
+        if (e.target.matches('.input-valor')) {
+            recalcularTodo(vistaActiva);
+            actualizarIndicador(vistaActiva);
+        }
+    });
+    recalcularTodo(vistaActiva);
+    actualizarIndicador(vistaActiva);
+}
+
+// Promedio por unidad y FINAL (promedio de las unidades con calificación)
+function recalcularFila(fila) {
+    if (!fila || !fila.dataset.idAlumno) return;
+    const promedios = [];
+
+    fila.querySelectorAll('td[data-promedio-unidad]').forEach(td => {
+        const unidad = td.dataset.promedioUnidad;
+        const vistaActiva = fila.closest('.instancia-grupo-activo') || document;
+        const pesos = Array.from(vistaActiva.querySelectorAll(`th.col-valor[data-vista="${unidad}"] input`))
+            .map(inp => parseFloat(inp.value) || 0);
+        const notas = Array.from(fila.querySelectorAll(`td[data-vista="${unidad}"] input`));
+
+        // Calificación de la unidad = suma de (nota × valor / 100); nota vacía cuenta 0
+        const hayNotas = notas.some(inp => inp.value !== '');
+        if (hayNotas) {
+            const prom = notas.reduce((acc, inp, k) => acc + (parseFloat(inp.value) || 0) * (pesos[k] || 0) / 100, 0);
+            td.textContent = prom.toFixed(1).replace(/\.0$/, '');
+            promedios.push(prom);
+        } else {
+            td.textContent = '-';
+        }
+    });
+
+    const final = promedios.length ? promedios.reduce((a, b) => a + b, 0) / promedios.length : 0;
+    const celdaFinal = fila.querySelector('td:nth-last-child(2) strong');
+    if (celdaFinal) celdaFinal.textContent = Math.round(final);
+    fila.classList.toggle('fila-aprobado', final >= 70);
+    fila.classList.toggle('fila-reprobado', final < 70);
+}
+
+function recalcularTodo(vistaActiva) {
+    vistaActiva.querySelectorAll('.tabla-excel tbody tr[data-id-alumno]').forEach(recalcularFila);
+}
+
+// Celda editable con el valor (%) de un entregable
+function crearCeldaValor(nombreVista, valor) {
+    const th = document.createElement('th');
+    th.className = 'col-dinamica col-valor';
+    th.dataset.vista = nombreVista;
+    th.innerHTML = '<input type="number" class="input-valor" min="0" max="100" step="any" style="width:70px;" title="Valor del entregable (%)">';
+    th.querySelector('input').value = valor;
+    return th;
+}
+
+// Muestra la suma de valores de la unidad activa (debe ser 100%)
+function actualizarIndicador(vistaActiva) {
+    const ind = vistaActiva.querySelector('.indicador-suma-valores');
+    const tab = vistaActiva.querySelector('.lista-unidades li.activo');
+    if (!ind || !tab) return;
+    const unidad = tab.dataset.unidad;
+    if (unidad === 'General') { ind.style.display = 'none'; return; }
+
+    const suma = Array.from(vistaActiva.querySelectorAll(`th.col-valor[data-vista="${unidad}"] input`))
+        .reduce((a, inp) => a + (parseFloat(inp.value) || 0), 0);
+    const redondeada = Math.round(suma * 100) / 100;
+    const ok = Math.abs(redondeada - 100) <= 0.01;
+    ind.style.display = 'block';
+    ind.style.color = ok ? '#198754' : '#dc3545';
+    ind.textContent = ok
+        ? `✔ Suma de valores de ${unidad}: 100%`
+        : `⚠ Suma de valores de ${unidad}: ${redondeada}% (${redondeada < 100 ? 'faltan ' + (Math.round((100 - redondeada) * 100) / 100) : 'sobran ' + (Math.round((redondeada - 100) * 100) / 100)}%, debe sumar 100%)`;
 }
 
 // Función auxiliar para generar las celdas y vaciarles el número correcto
-function crearColumnaBD(thead, filas, nombreVista, nombreColumna, idEntregable, calificaciones, finalTh) {
+function crearColumnaBD(thead, filas, nombreVista, nombreColumna, idEntregable, calificaciones, finalTh, valor) {
     const nuevoTh = document.createElement('th');
     nuevoTh.className = 'col-dinamica encabezado-editable';
     nuevoTh.contentEditable = 'true';
@@ -364,6 +547,12 @@ function crearColumnaBD(thead, filas, nombreVista, nombreColumna, idEntregable, 
     
     thead.insertBefore(nuevoTh, finalTh);
 
+    // Celda de valor (%) en la segunda fila del encabezado
+    const filaValores = thead.parentNode.querySelector('.fila-valores');
+    const celdaValor = crearCeldaValor(nombreVista, valor);
+    celdaValor.style.display = 'none';
+    filaValores.insertBefore(celdaValor, filaValores.querySelector('th:nth-last-child(2)'));
+
     filas.forEach(fila => {
         const finalTd = fila.querySelector('td:nth-last-child(2)');
         const nuevoTd = document.createElement('td');
@@ -372,7 +561,7 @@ function crearColumnaBD(thead, filas, nombreVista, nombreColumna, idEntregable, 
         if (idEntregable) {
             const idAlumno = fila.dataset.idAlumno;
             // Buscar si el alumno tiene un número guardado para esta columna exacta
-            const notaEncontrada = calificaciones.find(c => c.numero_control === idAlumno && c.id_entregable === idEntregable);
+            const notaEncontrada = calificaciones.find(c => String(c.numero_control) === String(idAlumno) && String(c.id_entregable) === String(idEntregable));
             if (notaEncontrada && notaEncontrada.calificacion !== null) {
                 valorNota = notaEncontrada.calificacion;
             }

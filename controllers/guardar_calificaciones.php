@@ -37,7 +37,7 @@ try {
 
     // Preparamos las consultas (se preparan una vez por eficiencia)
     $stmtDelete = $pdo->prepare("DELETE FROM entregables WHERE id_grupo = :id_grupo AND unidad = :unidad");
-    $stmtInsertCol = $pdo->prepare("INSERT INTO entregables (id_grupo, unidad, nombre) VALUES (:id_grupo, :unidad, :nombre)");
+    $stmtInsertCol = $pdo->prepare("INSERT INTO entregables (id_grupo, unidad, nombre, valor) VALUES (:id_grupo, :unidad, :nombre, :valor)");
     $stmtInsertNota = $pdo->prepare("INSERT INTO calificaciones_alumnos (numero_control, id_entregable, calificacion) VALUES (:num_control, :id_entregable, :calif)");
 
     // 2. Recorremos cada unidad recibida (Unidad 1 a Unidad 5)
@@ -46,17 +46,32 @@ try {
         $nombre_unidad = $data_unidad['unidad'];
         $columnas = $data_unidad['columnas'];
         $alumnos = $data_unidad['alumnos'];
+        $valores = $data_unidad['valores'] ?? [];
+
+        // Validar que los valores de los entregables de la unidad sumen 100
+        $suma = 0;
+        foreach ($columnas as $i => $_) {
+            $v = isset($valores[$i]) ? floatval($valores[$i]) : 0;
+            if ($v < 0 || $v > 100) {
+                throw new Exception("Valor inválido en $nombre_unidad (debe estar entre 0 y 100).");
+            }
+            $suma += $v;
+        }
+        if (abs($suma - 100) > 0.01) {
+            throw new Exception("Los entregables de $nombre_unidad suman $suma%, deben sumar 100%.");
+        }
 
         // Sincronización: Limpiamos los entregables de ESTA unidad en ESTE grupo
         $stmtDelete->execute(['id_grupo' => $id_grupo, 'unidad' => $nombre_unidad]);
 
         // Insertar columnas de esta unidad
         $ids_entregables = [];
-        foreach ($columnas as $nombre_columna) {
+        foreach ($columnas as $i => $nombre_columna) {
             $stmtInsertCol->execute([
                 'id_grupo' => $id_grupo,
                 'unidad' => $nombre_unidad,
-                'nombre' => $nombre_columna
+                'nombre' => $nombre_columna,
+                'valor' => floatval($valores[$i] ?? 0)
             ]);
             $ids_entregables[] = $pdo->lastInsertId();
         }
