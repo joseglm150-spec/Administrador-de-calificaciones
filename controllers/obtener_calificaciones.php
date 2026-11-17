@@ -14,7 +14,12 @@ $rfc_docente = $_SESSION['rfc'];
 
 try {
     // 1. Validar que el grupo exista y le pertenezca al docente
-    $stmtGrupo = $pdo->prepare("SELECT id_grupo FROM grupos WHERE clave_grupo = :clave AND rfc_docente = :rfc LIMIT 1");
+    $stmtGrupo = $pdo->prepare(
+        "SELECT g.id_grupo, m.total_unidades
+         FROM grupos g
+         INNER JOIN materias m ON m.materia = g.materia
+         WHERE g.clave_grupo = :clave AND g.rfc_docente = :rfc LIMIT 1"
+    );
     $stmtGrupo->execute(['clave' => $clave_grupo, 'rfc' => $rfc_docente]);
     $grupo = $stmtGrupo->fetch(PDO::FETCH_ASSOC);
 
@@ -23,9 +28,21 @@ try {
         exit;
     }
     $id_grupo = $grupo['id_grupo'];
+    $total_unidades = (int)$grupo['total_unidades'];
+
+    // 1.5 Extraer los alumnos inscritos en este grupo
+    $stmtAlu = $pdo->prepare(
+        "SELECT a.no_de_control, a.apellidos, a.nombres
+         FROM inscripciones_grupo ig
+         INNER JOIN alumnos a ON a.no_de_control = ig.no_de_control
+         WHERE ig.id_grupo = :id_grupo AND ig.estatus = 'INSCRITO'
+         ORDER BY a.apellidos ASC, a.nombres ASC"
+    );
+    $stmtAlu->execute(['id_grupo' => $id_grupo]);
+    $alumnos = $stmtAlu->fetchAll(PDO::FETCH_ASSOC);
 
     // 2. Extraer todas las columnas (Entregables) creadas para este grupo
-    $stmtEnt = $pdo->prepare("SELECT id_entregable, unidad, nombre FROM entregables WHERE id_grupo = :id_grupo ORDER BY id_entregable ASC");
+    $stmtEnt = $pdo->prepare("SELECT id_entregable, unidad, nombre, valor FROM entregables WHERE id_grupo = :id_grupo ORDER BY id_entregable ASC");
     $stmtEnt->execute(['id_grupo' => $id_grupo]);
     $entregables = $stmtEnt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -44,6 +61,8 @@ try {
     // Devolvemos todo empaquetado a JavaScript
     echo json_encode([
         'exito' => true,
+        'total_unidades' => $total_unidades,
+        'alumnos' => $alumnos,
         'entregables' => $entregables,
         'calificaciones' => $calificaciones
     ]);
