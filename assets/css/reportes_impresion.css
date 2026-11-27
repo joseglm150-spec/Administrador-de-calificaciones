@@ -1,0 +1,561 @@
+/* ==========================================================================
+   ESTILOS INSTITUCIONALES PARA REPORTES, HORARIO Y MACROPLANEACIÓN (SIRCA)
+   ========================================================================== */
+
+/* Barra de herramientas de reporte */
+.barra-herramientas-reporte {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.barra-herramientas-reporte .grupo-botones {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-accion-reporte {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid #1b365d;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-accion-reporte.btn-primario {
+    background: #1b365d;
+    color: #ffffff;
+}
+.btn-accion-reporte.btn-primario:hover {
+    background: #122540;
+}
+
+.btn-accion-reporte.btn-excel {
+    background: #107c41;
+    color: #ffffff;
+    border-color: #107c41;
+}
+.btn-accion-reporte.btn-excel:hover {
+    background: #0b582e;
+}
+
+.btn-accion-reporte.btn-pdf {
+    background: #d9381e;
+    color: #ffffff;
+    border-color: #d9381e;
+}
+.btn-accion-reporte.btn-pdf:hover {
+    background: #a92510;
+}
+
+.btn-accion-reporte.btn-secundario {
+    background: #ffffff;
+    color: #1b365d;
+}
+.btn-accion-reporte.btn-secundario:hover {
+    background: #f0f4f8;
+}
+
+/* Selector de pestañas de reporte de gestión */
+.pestanas-periodo-gestion {
+    display: inline-flex;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 6px;
+    gap: 4px;
+}
+
+.btn-pestana-periodo {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-pestana-periodo:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.btn-pestana-periodo.activo {
+    background: #1b365d;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Tarjeta contenedora de reporte estilo documento */
+.documento-hoja {
+    background: #ffffff;
+    padding: 24px 30px;
+    border-radius: 8px;
+    border: 1px solid #d3dbe3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
+    overflow-x: auto;
+    font-family: Arial, "Segoe UI", sans-serif;
+    color: #1a202c;
+}
+
+/* Encabezados oficiales de los documentos */
+.encabezado-institucional {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1b365d;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.encabezado-institucional .logo-sep,
+.encabezado-institucional .logo-tecnm,
+.encabezado-institucional .logo-itesp {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+}
+
+.encabezado-institucional .titulos-centro {
+    text-align: center;
+    flex: 1;
+    padding: 0 15px;
+}
+
+.encabezado-institucional .titulos-centro h2 {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1b365d;
+    margin: 0 0 3px 0;
+    letter-spacing: 0.5px;
+}
+
+.encabezado-institucional .titulos-centro h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 3px 0;
+}
+
+.encabezado-institucional .titulos-centro h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    margin: 0;
+}
+
+/* Secciones de tablas de Horario */
+.barra-seccion-titulo {
+    background: #1b365d;
+    color: #ffffff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 5px;
+    margin-top: 15px;
+    border-radius: 2px;
+}
+
+.tabla-adscripcion {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.tabla-adscripcion td {
+    padding: 4px 8px;
+    border: 1px solid #cbd5e0;
+}
+
+.tabla-adscripcion td.etiqueta-adsc {
+    font-weight: bold;
+    background: #f7fafc;
+    width: 130px;
+}
+
+.tabla-horario-docente {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+.tabla-horario-docente th {
+    background: #1b365d;
+    color: #ffffff;
+    padding: 6px 4px;
+    border: 1px solid #1b365d;
+    text-align: center;
+    font-size: 11px;
+}
+
+.tabla-horario-docente td {
+    border: 1px solid #cbd5e0;
+    padding: 6px 4px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabla-horario-docente td.col-materia {
+    text-align: left;
+    padding-left: 8px;
+    font-weight: 600;
+}
+
+.pie-totales-horario {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e0;
+    background: #f7fafc;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Tabla Macroplaneación */
+.tabla-macroplaneacion {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    margin: 15px 0;
+}
+
+.tabla-macroplaneacion th {
+    background: #f0f4f8;
+    color: #1b365d;
+    font-weight: bold;
+    padding: 8px 6px;
+    border: 1px solid #cbd5e0;
+    text-align: center;
+}
+
+.tabla-macroplaneacion td {
+    border: 1px solid #cbd5e0;
+    padding: 8px 6px;
+    vertical-align: middle;
+}
+
+/* Firmas institucionales */
+.seccion-firmas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+    padding-top: 15px;
+    text-align: center;
+}
+
+.caja-firma {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.linea-firma {
+    width: 80%;
+    border-top: 1px solid #2d3748;
+    margin-bottom: 6px;
+}
+
+.cargo-firma {
+    font-size: 11px;
+    color: #4a5568;
+    margin-top: 2px;
+}
+
+.nombre-firma {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1a202c;
+}
+
+/* Tabla de Reporte de Calificaciones Parciales */
+.tabla-calificaciones-parciales {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.tabla-calificaciones-parciales th {
+    background: #e9f1fa;
+    color: #1b365d;
+    border: 1px solid #b0c4de;
+    padding: 5px 3px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.tabla-calificaciones-parciales td {
+    border: 1px solid #cbd5e0;
+    padding: 4px 6px;
+    vertical-align: middle;
+}
+
+.tabla-calificaciones-parciales td.celda-num,
+.tabla-calificaciones-parciales td.celda-ctrl,
+.tabla-calificaciones-parciales td.celda-calif {
+    text-align: center;
+}
+
+.tabla-calificaciones-parciales tr:nth-child(even) td {
+    background: #fbfcfd;
+}
+
+.fila-indices-reprobacion td {
+    background: #fff8e6 !important;
+    font-weight: bold;
+    border-top: 2px solid #b0c4de;
+}
+
+/* Tabla de Gestión del Curso estilo Excel */
+.tabla-gestion-excel {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    margin-top: 10px;
+}
+
+.tabla-gestion-excel th {
+    background: #e2e8f0;
+    border: 1px solid #a0aec0;
+    padding: 6px 4px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.tabla-gestion-excel td {
+    border: 1px solid #cbd5e0;
+    padding: 6px 6px;
+    vertical-align: middle;
+}
+
+.tabla-gestion-excel td.celda-azul,
+.tabla-gestion-excel th.celda-azul {
+    background-color: #d9e1f2 !important;
+}
+
+.tabla-gestion-excel td.celda-amarillo,
+.tabla-gestion-excel th.celda-amarillo {
+    background-color: #fff2cc !important;
+}
+
+.tabla-gestion-excel td.celda-naranja,
+.tabla-gestion-excel th.celda-naranja {
+    background-color: #fce4d6 !important;
+}
+
+.input-tabla-gestion {
+    width: 50px;
+    padding: 3px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #718096;
+    border-radius: 3px;
+    background: #ffffff;
+}
+.input-tabla-gestion:focus {
+    outline: 2px solid #1b365d;
+}
+
+.seccion-notas-gestion {
+    margin-top: 15px;
+    padding: 10px 14px;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+/* Ventana modal de reportes */
+.modal-reporte-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-reporte-contenido {
+    background: #ffffff;
+    width: 95%;
+    max-width: 1100px;
+    max-height: 90vh;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.modal-reporte-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: #1b365d;
+    color: #ffffff;
+}
+
+.modal-reporte-cabecera h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.btn-cerrar-modal {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-reporte-cuerpo {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* ==========================================================================
+   REGLAS PARA IMPRESIÓN OFICIAL (@media print)
+   ========================================================================== */
+@media print {
+    body, html {
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Ocultar elementos de navegación de la página */
+    aside,
+    header,
+    .top-bar,
+    .barra-herramientas-reporte,
+    .btn-cerrar-modal,
+    .pestanas-periodo-gestion,
+    .calificaciones-sidebar,
+    .controles-tabla,
+    .calificaciones-pie,
+    .btn-regresar,
+    .btn-submit,
+    button:not(.btn-imprimir-reporte) {
+        display: none !important;
+    }
+
+    .layout, main, .contenido {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    .documento-hoja {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    .modal-reporte-overlay {
+        position: static !important;
+        background: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-reporte-contenido {
+        box-shadow: none !important;
+        max-height: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .modal-reporte-cabecera {
+        display: none !important;
+    }
+
+    .tabla-adscripcion td,
+    .tabla-horario-docente td,
+    .tabla-horario-docente th,
+    .tabla-macroplaneacion td,
+    .tabla-macroplaneacion th,
+    .tabla-calificaciones-parciales td,
+    .tabla-calificaciones-parciales th,
+    .tabla-gestion-excel td,
+    .tabla-gestion-excel th {
+        border-color: #000000 !important;
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Gestión del curso: ocultar bordes de inputs y mostrar solo el valor */
+    .tabla-gestion-excel .input-tabla-gestion {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -moz-appearance: textfield !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        font-weight: bold !important;
+        color: #000000 !important;
+    }
+
+    /* Ocultar flechas de inputs numéricos en impresión */
+    .tabla-gestion-excel .input-tabla-gestion::-webkit-inner-spin-button,
+    .tabla-gestion-excel .input-tabla-gestion::-webkit-outer-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0 !important;
+    }
+
+    /* Eliminar fondo gris de la etiqueta de carrera en impresión */
+    .tabla-gestion-excel td span[style*="background"] {
+        background: transparent !important;
+    }
+
+    @page {
+        margin: 1cm;
+        size: letter landscape;
+    }
+}

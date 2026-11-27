@@ -20,26 +20,27 @@
         <img src="assets/img/SIRCA.jpeg" alt="Logo de el sistema" class="logo-SIRCA">
 
         <form action="controllers/login_controller.php" method="POST">
-            <!-- RFC -->
+            <!-- RFC o Usuario -->
             <div class="input-group">
-                <label for="rfc">RFC</label>
-                <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC" maxlength="13" autocomplete="username" required>
+                <label for="rfc">RFC o Usuario</label>
+                <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC o Usuario" maxlength="20" autocomplete="username" value="SINL900223TC2" required>
             </div>
             
             <!-- Contraseña -->
             <div class="input-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" autocomplete="current-password" required>
+                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" autocomplete="current-password" value="123456" required>
             </div>
 
             <!-- Botón acceder -->
             <div class="checkbox-group">
-                <button type="submit" class="btn-submit">Acceder</button>
+                <button type="submit" class="btn-submit">Acceder al Sistema</button>
                 <?php if (isset($_GET['error'])): ?>
-                    <p class="error-message">RFC y/o contraseña incorrectos.</p>
+                    <p class="error-message">RFC/Usuario y/o contraseña incorrectos.</p>
                 <?php endif; ?>
             </div> 
         </form>
+
 
         <nav class="footer-links" aria-label="Opciones de acceso">
             <a class="recovery-link" href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a>   
