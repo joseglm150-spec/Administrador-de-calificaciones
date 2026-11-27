@@ -1,9 +1,8 @@
 <?php
 session_start();
-// Ajusta la ruta de tu conexión
 require_once '../config/conection.php'; 
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 if (!isset($_SESSION['rfc'])) {
     echo json_encode(['exito' => false, 'mensaje' => 'No hay sesión activa.']);
@@ -18,35 +17,62 @@ if (!$datos) {
     exit;
 }
 
-$clave_grupo = $datos['clave_grupo'];
-$paquete_unidades = $datos['unidades']; // Ahora recibimos el arreglo de 5 unidades
+$clave_grupo = $datos['clave_grupo'] ?? '';
+$paquete_unidades = $datos['unidades'] ?? [];
 $rfc_docente = $_SESSION['rfc'];
 
 try {
     $pdo->beginTransaction();
 
     // 1. Verificar el grupo
-    $stmtGrupo = $pdo->prepare("SELECT id_grupo FROM grupos WHERE clave_grupo = :clave AND rfc_docente = :rfc LIMIT 1");
-    $stmtGrupo->execute(['clave' => $clave_grupo, 'rfc' => $rfc_docente]);
+    $stmtGrupo = $pdo->prepare("SELECT id_grupo, materia FROM grupos WHERE (clave_grupo = :clave OR id_grupo = :id_g) AND rfc_docente = :rfc LIMIT 1");
+    $stmtGrupo->execute([
+        'clave' => $clave_grupo,
+        'id_g' => is_numeric($clave_grupo) ? (int)$clave_grupo : 0,
+        'rfc' => $rfc_docente
+    ]);
     $grupo = $stmtGrupo->fetch(PDO::FETCH_ASSOC);
 
     if (!$grupo) {
         throw new Exception("El grupo no existe o no te pertenece.");
     }
-    $id_grupo = $grupo['id_grupo'];
+    $id_grupo = (int)$grupo['id_grupo'];
 
-    // Preparamos las consultas (se preparan una vez por eficiencia)
+    // Asegurar unidades en tabla unidades
+    $stmtGetU = $pdo->prepare("SELECT numero_unidad, id_unidad FROM unidades WHERE id_grupo = ?");
+    $stmtGetU->execute([$id_grupo]);
+    $unidadesExistentes = $stmtGetU->fetchAll(PDO::FETCH_KEY_PAIR);
+
+    $stmtInsU = $pdo->prepare("INSERT INTO unidades (id_grupo, numero_unidad, nombre_unidad) VALUES (?, ?, ?)");
+
+    // Preparamos las consultas
     $stmtDelete = $pdo->prepare("DELETE FROM entregables WHERE id_grupo = :id_grupo AND unidad = :unidad");
     $stmtInsertCol = $pdo->prepare("INSERT INTO entregables (id_grupo, unidad, nombre, valor) VALUES (:id_grupo, :unidad, :nombre, :valor)");
     $stmtInsertNota = $pdo->prepare("INSERT INTO calificaciones_alumnos (numero_control, id_entregable, calificacion) VALUES (:num_control, :id_entregable, :calif)");
+    $stmtUpsertCalifEval = $pdo->prepare(
+        "INSERT INTO calificacion_evaluacion (no_de_control, id_grupo, id_unidad, unidad, calificacion, registrada_por_rfc, oportunidad)
+         VALUES (:nc, :id_g, :id_u, :num_u, :calif, :rfc, 'ORD')
+         ON DUPLICATE KEY UPDATE calificacion = VALUES(calificacion)"
+    );
 
-    // 2. Recorremos cada unidad recibida (Unidad 1 a Unidad 5)
+    // 2. Recorremos cada unidad recibida
     foreach ($paquete_unidades as $data_unidad) {
-        
         $nombre_unidad = $data_unidad['unidad'];
         $columnas = $data_unidad['columnas'];
         $alumnos = $data_unidad['alumnos'];
         $valores = $data_unidad['valores'] ?? [];
+
+        // Extraer número de unidad
+        preg_match('/\d+/', $nombre_unidad, $matches);
+        $numUnidad = isset($matches[0]) ? (int)$matches[0] : 1;
+
+        if (!isset($unidadesExistentes[$numUnidad])) {
+            $stmtInsU->execute([$id_grupo, $numUnidad, $nombre_unidad]);
+            $idUnidadFK = (int)$pdo->lastInsertId();
+            $unidadesExistentes[$numUnidad] = $idUnidadFK;
+        } else {
+            $idUnidadFK = (int)$unidadesExistentes[$numUnidad];
+        }
 
         // Validar que los valores de los entregables de la unidad sumen 100
         $suma = 0;
@@ -57,11 +83,11 @@ try {
             }
             $suma += $v;
         }
-        if (abs($suma - 100) > 0.01) {
+        if (count($columnas) > 0 && abs($suma - 100) > 0.05) {
             throw new Exception("Los entregables de $nombre_unidad suman $suma%, deben sumar 100%.");
         }
 
-        // Sincronización: Limpiamos los entregables de ESTA unidad en ESTE grupo
+        // Limpiar los entregables de ESTA unidad en ESTE grupo
         $stmtDelete->execute(['id_grupo' => $id_grupo, 'unidad' => $nombre_unidad]);
 
         // Insertar columnas de esta unidad
@@ -76,12 +102,14 @@ try {
             $ids_entregables[] = $pdo->lastInsertId();
         }
 
-        // Insertar las calificaciones de esta unidad
+        // Insertar las calificaciones de esta unidad y calcular promedio de la unidad
         foreach ($alumnos as $alumno) {
             $num_control = $alumno['id_alumno'];
-            
+            $sumaNotaPonderada = 0;
+            $tieneNotas = false;
+
             foreach ($alumno['notas'] as $indice => $nota) {
-                $valor_nota = ($nota === '') ? null : floatval($nota);
+                $valor_nota = ($nota === '' || $nota === null) ? null : floatval($nota);
                 
                 if (isset($ids_entregables[$indice])) {
                     $stmtInsertNota->execute([
@@ -89,16 +117,37 @@ try {
                         'id_entregable' => $ids_entregables[$indice],
                         'calif' => $valor_nota
                     ]);
+
+                    if ($valor_nota !== null) {
+                        $peso = floatval($valores[$indice] ?? 0);
+                        $sumaNotaPonderada += ($valor_nota * ($peso / 100.0));
+                        $tieneNotas = true;
+                    }
                 }
+            }
+
+            // Sincronizar en calificacion_evaluacion para reportes oficiales
+            if ($tieneNotas) {
+                $califFinalUnidad = round($sumaNotaPonderada);
+                $stmtUpsertCalifEval->execute([
+                    'nc' => $num_control,
+                    'id_g' => $id_grupo,
+                    'id_u' => $idUnidadFK,
+                    'num_u' => $numUnidad,
+                    'calif' => $califFinalUnidad,
+                    'rfc' => $rfc_docente
+                ]);
             }
         }
     }
 
     $pdo->commit();
-    echo json_encode(['exito' => true, 'mensaje' => 'Guardado exitosamente.']);
+    echo json_encode(['exito' => true, 'mensaje' => 'Calificaciones y reportes sincronizados correctamente.']);
 
 } catch (Exception $e) {
-    $pdo->rollBack();
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     echo json_encode(['exito' => false, 'mensaje' => $e->getMessage()]);
 }
 ?>

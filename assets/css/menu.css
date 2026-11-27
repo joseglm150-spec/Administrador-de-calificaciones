@@ -187,68 +187,142 @@ header h1 {
 }
 
 .perfil-admin {
-	display: flex;
-	width: min(100%, 520px);
-	flex-direction: column;
-	align-items: center;
-	gap: 20px;
-	margin: 0 auto;
-	padding: 32px;
-	border: 1px solid var(--borde);
-	border-radius: 11px;
+	width: 100%;
+	margin: 0 0 28px 0;
+	padding: 26px 28px;
+	border: 1px solid #cbd5e1;
+	border-radius: 12px;
 	background: #fff;
-	box-shadow: 0 3px 12px #1c375a0a;
-	text-align: center;
+	box-shadow: 0 4px 14px rgba(25, 57, 106, 0.06);
 }
 
-.avatar-admin {
-	display: grid;
-	width: 144px;
-	height: 144px;
-	flex: none;
-	place-items: center;
-	border: 5px solid #d6e5f5;
-	border-radius: 50%;
-	background: #edf4fc;
-	box-shadow: 0 0 0 1px var(--borde);
-	font-size: 64px;
+.perfil-admin-encabezado {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin-bottom: 18px;
+	padding-bottom: 14px;
+	border-bottom: 2px solid #edf4fc;
 }
 
-.datos-perfil-admin {
-	width: min(100%, 380px);
+.perfil-admin-subtitulo {
+	display: block;
+	margin-bottom: 5px;
+	color: var(--gris);
+	font-size: 11.5px;
+	font-weight: 700;
+	letter-spacing: 0.6px;
+	text-transform: uppercase;
 }
 
 .perfil-admin h2 {
-	margin: 0 0 20px;
+	margin: 0;
 	color: var(--azul);
 	font-size: 22px;
 	overflow-wrap: anywhere;
 }
 
-.datos-perfil-admin dl {
-	margin: 0;
-	border-top: 1px solid var(--borde);
+.perfil-admin-periodo {
+	padding: 7px 14px;
+	border: 1px solid #bfd3ea;
+	border-radius: 6px;
+	background: #edf4fc;
+	color: var(--azul);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.3px;
 }
 
-.dato-admin {
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 12px 0;
-	border-bottom: 1px solid var(--borde);
-	font-size: 14px;
+.tabla-perfil-contenedor {
+	width: 100%;
+	overflow-x: auto;
+	border: 1px solid #cbd5e1;
+	border-radius: 8px;
+}
+
+.tabla-perfil-docente {
+	width: 100%;
+	min-width: 640px;
+	border-collapse: collapse;
 	text-align: left;
 }
 
-.dato-admin dt {
-	color: var(--gris);
-	font-weight: 600;
+.tabla-perfil-docente th,
+.tabla-perfil-docente td {
+	padding: 13px 16px;
+	border-bottom: 1px solid #cbd5e1;
+	border-right: 1px solid #cbd5e1;
+	font-size: 13.5px;
+	line-height: 1.45;
+	vertical-align: middle;
+	overflow-wrap: break-word;
 }
 
-.dato-admin dd {
-	margin: 0;
+.tabla-perfil-docente th:last-child,
+.tabla-perfil-docente td:last-child {
+	border-right: 0;
+}
+
+.tabla-perfil-docente tr:last-child th,
+.tabla-perfil-docente tr:last-child td {
+	border-bottom: 0;
+}
+
+.tabla-perfil-docente th {
+	background: #edf4fc;
+	color: var(--azul);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+}
+
+.tabla-perfil-docente td {
+	background: #fff;
 	color: var(--texto);
-	text-align: right;
+	font-weight: 500;
+}
+
+.accesos-inicio {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 18px;
+}
+
+.acceso-inicio-tarjeta {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 22px 20px;
+	border: 1px solid #cbd5e1;
+	border-top: 4px solid var(--azul);
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 3px 10px rgba(25, 57, 106, 0.05);
+	text-align: center;
+}
+
+.acceso-inicio-cuerpo h3 {
+	margin: 0 0 6px;
+	color: var(--azul);
+	font-size: 17px;
+}
+
+.acceso-inicio-cuerpo p {
+	margin: 0;
+	color: var(--gris);
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+.acceso-inicio-tarjeta .btn-accion-reporte {
+	width: 100%;
+	justify-content: center;
+	text-align: center;
+	padding: 10px 14px;
 }
 
 .seccion {
@@ -317,9 +391,33 @@ header h1 {
 
 .tabla-grupos-contenedor {
 	overflow-x: auto;
-	border: 1px solid var(--borde);
-	border-radius: 10px;
+	border: 1px solid #cbd5e1;
+	border-radius: 12px;
 	background: #fff;
+	box-shadow: 0 4px 14px rgba(25, 57, 106, 0.06);
+}
+
+.grupos-encabezado {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 14px;
+	padding: 22px 26px 18px;
+	border-bottom: 2px solid #edf4fc;
+}
+
+.grupos-titulo {
+	margin: 0 0 6px;
+	color: #1b365d;
+	font-size: 1.3rem;
+	font-weight: 700;
+}
+
+.grupos-subtitulo {
+	margin: 0;
+	color: var(--gris);
+	font-size: 0.875rem;
 }
 
 .tabla-grupos {
@@ -377,7 +475,8 @@ header h1 {
 		width: 210px;
 	}
 
-	.tarjetas {
+	.tarjetas,
+	.accesos-inicio {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
@@ -410,7 +509,6 @@ header h1 {
 		padding: 10px;
 	}
 
-	aside nav .menu-opcion span:last-child,
 	.etiqueta {
 		display: none;
 	}
@@ -436,19 +534,11 @@ header h1 {
 	}
 
 	.perfil-admin {
-		padding: 24px 18px;
+		padding: 18px;
 	}
 
-	.dato-admin {
-		flex-direction: column;
-		gap: 4px;
-	}
-
-	.dato-admin dd {
-		text-align: left;
-	}
-
-	.tarjetas {
+	.tarjetas,
+	.accesos-inicio {
 		grid-template-columns: 1fr;
 	}
 }
